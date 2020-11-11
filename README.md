@@ -13,11 +13,25 @@ mvn clean compile package
 ## Running the demo
 You're going to need a database which has a structure like this:
 
-```
+MySQL:
+```sql
 CREATE TABLE orders (
     id int not null auto_increment,
     date datetime not null,
     primary key(id)
+);
+```
+Oracle:
+```sql
+CREATE TABLE ORDERS 
+(
+  ID NUMBER NOT NULL 
+, DATEX DATE NOT NULL 
+, CONSTRAINT ORDERS_PK PRIMARY KEY 
+  (
+    ID 
+  )
+  ENABLE 
 );
 ```
 
