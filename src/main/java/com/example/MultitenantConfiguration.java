@@ -20,7 +20,7 @@ import org.slf4j.LoggerFactory;
 @Configuration
 public class MultitenantConfiguration {
 
-    private static final Logger LOG = LoggerFactory.getLogger(MultitenantConfiguration.class);
+    private static final Logger log = LoggerFactory.getLogger(MultitenantConfiguration.class);
 
     @Autowired
     private DataSourceProperties properties;
@@ -69,7 +69,7 @@ public class MultitenantConfiguration {
     }
 
     private DataSource buildTenantDataSource(Properties tenantProperties) {
-        LOG.info("Building Tenant Datasource:  {}", tenantProperties);
+        log.info("Building Tenant Datasource:  {}", tenantProperties);
 
         HikariDataSource ds = new HikariDataSource();
         ds.setPoolName("Hikari-" + tenantProperties.getProperty("name"));
@@ -81,7 +81,7 @@ public class MultitenantConfiguration {
         ds.setAllowPoolSuspension(false);
         ds.setAutoCommit(true);
         ds.setConnectionTimeout(30000);
-        ds.setIdleTimeout(300000);
+        //ds.setIdleTimeout(300000);
         ds.setMinimumIdle(4);
         ds.setInitializationFailTimeout(1);
         ds.setIsolateInternalQueries(false);
@@ -91,6 +91,15 @@ public class MultitenantConfiguration {
         ds.setReadOnly(false);
         ds.setRegisterMbeans(false);
         ds.setValidationTimeout(5000);
+
+        StringBuilder initSQL = new StringBuilder();
+        initSQL
+            .append("BEGIN")
+            .append(" execute immediate 'alter session set NLS_DATE_FORMAT = ''DD/MM/YYYY'''; ")
+            .append(" execute immediate 'alter session set NLS_NUMERIC_CHARACTERS = ''.,'''; ")
+            .append("END;");
+
+        ds.setConnectionInitSql(initSQL.toString());
         return ds;
     }
 
@@ -99,7 +108,7 @@ public class MultitenantConfiguration {
      * @return
      */
     private DataSource defaultDataSource() {
-        LOG.info("Building default  Datasource:  {}", properties.getUrl());
+        log.info("Building default  Datasource:  {}", properties.getUrl());
 
         HikariDataSource ds = new HikariDataSource();
         ds.setPoolName("Hikari-h2-default");
