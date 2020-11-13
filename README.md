@@ -10,6 +10,16 @@ Run the following command to build the solution:
 mvn clean compile package
 ```
 
+## Simple tests
+
+```
+mvn spring-boot:run
+
+curl -H "X-TenantID: ufcg" http://localhost:8080/date
+curl -H "X-TenantID: ufpb" http://localhost:8080/nls
+```
+
+
 ## Running the demo
 You're going to need a database which has a structure like this:
 
