@@ -81,13 +81,13 @@ public class MultitenantConfiguration {
         ds.setAllowPoolSuspension(false);
         ds.setAutoCommit(true);
         ds.setConnectionTimeout(30000);
-        //ds.setIdleTimeout(300000);
+        ds.setIdleTimeout(300000);
         ds.setMinimumIdle(4);
         ds.setInitializationFailTimeout(1);
         ds.setIsolateInternalQueries(false);
         ds.setLeakDetectionThreshold(600000);
         ds.setMaxLifetime(1800000);
-        ds.setMaximumPoolSize(3);
+        ds.setMaximumPoolSize(7);
         ds.setReadOnly(false);
         ds.setRegisterMbeans(false);
         ds.setValidationTimeout(5000);
@@ -95,8 +95,24 @@ public class MultitenantConfiguration {
         StringBuilder initSQL = new StringBuilder();
         initSQL
             .append("BEGIN")
-            .append(" execute immediate 'alter session set NLS_DATE_FORMAT = ''DD/MM/YYYY'''; ")
-            .append(" execute immediate 'alter session set NLS_NUMERIC_CHARACTERS = ''.,'''; ")
+            //.append(" execute immediate 'alter session set NLS_DATE_FORMAT = ''DD/MM/YYYY'''; ")
+            .append(" dbms_session.set_nls('NLS_LANGUAGE', '''BRAZILIAN PORTUGUESE''');  ")
+            .append(" dbms_session.set_nls('NLS_TERRITORY', '''BRAZIL''');  ")
+            .append(" dbms_session.set_nls('NLS_CURRENCY', '''R$''');  ")
+            .append(" dbms_session.set_nls('NLS_ISO_CURRENCY', '''BRAZIL''');  ")
+            .append(" dbms_session.set_nls('NLS_NUMERIC_CHARACTERS', ''',.''');  ")
+            .append(" dbms_session.set_nls('NLS_CALENDAR', '''GREGORIAN''');  ")
+            .append(" dbms_session.set_nls('NLS_DATE_FORMAT', '''DD/MM/YYYY''');  ")
+            .append(" dbms_session.set_nls('NLS_DATE_LANGUAGE', '''BRAZILIAN PORTUGUESE''');  ")
+            .append(" dbms_session.set_nls('NLS_SORT', '''WEST_EUROPEAN''');  ")
+            .append(" dbms_session.set_nls('NLS_TIME_FORMAT', '''HH24:MI:SSXFF''');  ")
+            .append(" dbms_session.set_nls('NLS_TIMESTAMP_FORMAT', '''DD/MM/YYYY HH24:MI:SSXFF''');  ")
+            .append(" dbms_session.set_nls('NLS_TIME_TZ_FORMAT', '''HH24:MI:SSXFF TZR''');  ")
+            .append(" dbms_session.set_nls('NLS_TIMESTAMP_TZ_FORMAT', '''DD/MM/YYYY HH24:MI:SSXFF TZR''');  ")
+            .append(" dbms_session.set_nls('NLS_DUAL_CURRENCY', '''R$''');  ")
+            .append(" dbms_session.set_nls('NLS_COMP', '''BINARY''');  ")
+            .append(" dbms_session.set_nls('NLS_LENGTH_SEMANTICS', '''CHAR''');  ")
+            .append(" dbms_session.set_nls('NLS_NCHAR_CONV_EXCP', '''FALSE''');  ")
             .append("END;");
 
         ds.setConnectionInitSql(initSQL.toString());
