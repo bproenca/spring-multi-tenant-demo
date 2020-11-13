@@ -17,6 +17,8 @@ mvn spring-boot:run
 
 curl -H "X-TenantID: ufcg" http://localhost:8080/date
 curl -H "X-TenantID: ufpb" http://localhost:8080/nls
+
+for i in `seq 1 200`; do curl -H "X-TenantID: ufcg" http://localhost:8080/nls; done
 ```
 
 
